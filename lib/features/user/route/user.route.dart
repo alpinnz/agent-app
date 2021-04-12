@@ -1,0 +1,26 @@
+import 'package:agent/config/route.config.dart';
+import 'package:agent/core/app.dart';
+import 'package:agent/features/user/screen/profile.screen.dart';
+import 'package:flutter/material.dart';
+import 'package:sailor/sailor.dart';
+
+class RouteConfigUser {
+  static final List<SailorRoute> routes = <SailorRoute>[
+    SailorRoute(
+      name: RouteConfig.USER_PROFILE_ROUTE,
+      builder: (context, args, params) {
+        return ProfileScreen();
+      },
+    ),
+  ];
+
+  static void navigateToProfile(BuildContext context,
+      {bool clearStack = false}) {
+    if (clearStack) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          RouteConfig.USER_PROFILE_ROUTE, (Route<dynamic> route) => false);
+    } else {
+      App.main.router.navigate(RouteConfig.USER_PROFILE_ROUTE);
+    }
+  }
+}

@@ -28,24 +28,54 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     compileSdkVersion 30
 
+    lintOptions {
+        disable 'InvalidPackage'
+        //Put the following line
+        checkReleaseBuilds false
+        //abortOnError false
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.agent"
+        applicationId "com.alpinnz.agent"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+            shrinkResources false
+            minifyEnabled false
             signingConfig signingConfigs.debug
+        }
+    }
+    flavorDimensions "flavors"
+
+    productFlavors {
+        dev {
+            dimension "flavors"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            resValue "string", "app_name", "Agent DEV"
+        }
+        qa {
+            dimension "flavors"
+            applicationIdSuffix ".qa"
+            versionNameSuffix "-qa"
+            resValue "string", "app_name", "Agent QA"
+        }
+        prod {
+            dimension "flavors"
+            resValue "string", "app_name", "Agent"
         }
     }
 }
@@ -56,4 +86,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
